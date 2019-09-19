@@ -9,7 +9,6 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
 
@@ -25,11 +24,9 @@
         <div id="app">
             <b-navbar toggleable="sm" type="dark" variant="primary">
                 <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
-
                 <b-navbar-brand href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </b-navbar-brand>
-
                 <b-collapse id="nav-text-collapse" is-nav>
                     <b-navbar-nav class="ml-auto">
                         @guest
@@ -44,15 +41,11 @@
                         </b-nav-item-dropdown>
                         @endguest
                     </b-navbar-nav>
-
                 </b-collapse>
             </b-navbar>
-
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
-
-
             <main class="py-4">
                 @yield('content')
             </main>
