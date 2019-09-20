@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<b-container>
+<b-container class="py-4">
     <b-row align-h="center">
         <b-col cols="8">
             <b-card title="Registro de usuario">
