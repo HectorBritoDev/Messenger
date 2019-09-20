@@ -1,7 +1,7 @@
 <?php
 
-use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,7 +12,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::create(['name' => 'Héctor', 'email' => 'prueba@test.com', 'password' => bcrypt('123')]);
-        // $this->call(UsersTableSeeder::class);
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+
+        $this->call(UsersTableSeeder::class);
+        $this->call(ConversationsTableSeeder::class);
+
     }
 }
