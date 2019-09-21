@@ -7,36 +7,23 @@
         title="Conversación activa"
         class="h-100"
       >
-        <b-media vertical-align="center" class="mb-2">
-          <b-img
-            rounded="circle"
-            slot="aside"
-            blank
-            width="48"
-            height="48"
-            blank-color="#ccc"
-            alt="img"
-          ></b-img>
-          <b-card>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.</b-card>
-        </b-media>
-        <b-media right-align vertical-align="center" class="mb-2">
-          <b-img
-            rounded="circle"
-            slot="aside"
-            blank
-            width="48"
-            height="48"
-            blank-color="#ccc"
-            alt="img"
-          ></b-img>
-          <b-card>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.</b-card>
-        </b-media>
+        <message-conversation-component
+          v-for="message in messages"
+          :key="message.id"
+          :written-by-me="message.written_by_me"
+        >{{ message.content }}</message-conversation-component>
+
         <div slot="footer">
-          <b-form class="mb-0">
+          <b-form class="mb-0" @submit.prevent="postMessage" autocomplete="off">
             <b-input-group>
-              <b-form-input type="text" placeholder="Escribe un mensaje" class="text-center"></b-form-input>
+              <b-form-input
+                type="text"
+                placeholder="Escribe un mensaje"
+                class="text-center"
+                v-model="newMessage"
+              ></b-form-input>
               <b-input-group-append>
-                <b-button variant="primary">Enviar</b-button>
+                <b-button type="submit" variant="primary">Enviar</b-button>
               </b-input-group-append>
             </b-input-group>
           </b-form>
@@ -62,7 +49,47 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      newMessage: "",
+      messages: {}
+    };
+  },
+  methods: {
+    getMessages() {
+      axios
+        .get("/api/message")
+        .then(response => {
+          this.messages = response.data;
+        })
+        .catch(error => {
+          aler(error);
+          console.log(error);
+        });
+    },
+    postMessage() {
+      const params = {
+        to_id: 2,
+        content: this.newMessage
+      };
+      axios
+        .post("/api/message", params)
+        .then(response => {
+          console.log(response.data);
+          this.newMessage = "";
+          this.getMessages();
+        })
+        .catch(error => {
+          aler(error);
+          console.log(error);
+        });
+    }
+  },
+  mounted() {
+    this.getMessages();
+  }
+};
 </script>
 
 <style>

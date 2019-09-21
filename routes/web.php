@@ -19,5 +19,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('/api/conversation', 'ConversationController')->only('index', 'update', 'destroy');
-Route::resource('/api/message', 'MessageController')->only('index', 'update', 'destroy');
+Route::resource('/api/conversation', 'ConversationController')->only('index', 'store', 'update', 'destroy');
+Route::resource('/api/message', 'MessageController')->only('index', 'store', 'update', 'destroy');
