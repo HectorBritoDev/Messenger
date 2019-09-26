@@ -11,9 +11,19 @@ class ConversationController extends Controller
     {
         $this->middleware('auth');
     }
+
     public function index()
     {
-        return Conversation::where('user_id', auth()->user()->id)->get();
+        return Conversation::where('user_id', auth()->user()->id)
+            ->get([
+                'id',
+                'contact_id',
+                'has_blocked',
+                'listen_notifications',
+                //'contact_name',
+                'last_message',
+                'last_time',
+            ]);
     }
 
     /**

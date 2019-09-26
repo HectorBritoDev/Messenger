@@ -53,13 +53,14 @@ export default {
   data() {
     return {
       newMessage: "",
-      messages: {}
+      messages: {},
+      contact_id: 14
     };
   },
   methods: {
     getMessages() {
       axios
-        .get("/api/message")
+        .get("/api/message?contact_id=" + this.contact_id)
         .then(response => {
           this.messages = response.data;
         })

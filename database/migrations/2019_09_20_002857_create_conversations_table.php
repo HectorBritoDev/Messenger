@@ -26,7 +26,7 @@ class CreateConversationsTable extends Migration
             $table->dateTime('last_time')->nullable();
 
             $table->boolean('listen_notifications')->default(true);
-            $table->boolean('has_bloked')->default(false);
+            $table->boolean('has_blocked')->default(false);
             $table->timestamps();
         });
     }

@@ -14,30 +14,36 @@ class MessageController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user_id = auth()->user()->id;
+        $contact_id = $request->contact_id;
         return Message::select(
             'id',
             DB::raw("IF(from_id=$user_id,1,0) as written_by_me"),
             //(('from_id' == $user_id) ? 1 : 0) . ' as writen_by_me',
             'content',
             'created_at')
-        // ->where('id', '=', 1)
+            ->where(function ($query) use ($user_id, $contact_id) {
+                $query->whereFromId($user_id)->whereToId($contact_id);
+            })
+            ->orWhere(function ($query) use ($user_id, $contact_id) {
+                $query->whereFromId($contact_id)->whereToId($user_id);
+            })
+            ->orderBy('id', 'asc')
             ->get();
     }
-
 
     public function store(Request $request)
     {
         $message = new Message;
         $message->from_id = auth()->user()->id;
-        $message->to_id= $request->to_id;
+        $message->to_id = $request->to_id;
         $message->content = $request->content;
-        $saved=$message->save();
+        $saved = $message->save();
 
-        $data=[];
-        $data['success']=$saved;
+        $data = [];
+        $data['success'] = $saved;
         return $data;
     }
 
@@ -51,7 +57,6 @@ class MessageController extends Controller
         //
     }
 
- 
     public function update(Request $request, Message $message)
     {
         //

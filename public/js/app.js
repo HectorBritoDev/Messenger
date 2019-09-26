@@ -1892,14 +1892,15 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       newMessage: "",
-      messages: {}
+      messages: {},
+      contact_id: 14
     };
   },
   methods: {
     getMessages: function getMessages() {
       var _this = this;
 
-      axios.get("/api/message").then(function (response) {
+      axios.get("/api/message?contact_id=" + this.contact_id).then(function (response) {
         _this.messages = response.data;
       })["catch"](function (error) {
         aler(error);
@@ -1968,17 +1969,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["variant"],
-  data: function data() {
-    return {
-      name: "Cecilia Sanchez",
-      lastMessage: "Tú: Hola",
-      lastTime: "1:37 pm"
-    };
+  props: {
+    variant: String,
+    conversation: Object
   },
-  mounted: function mounted() {
-    console.log("Component mounted.");
-  }
+  data: function data() {
+    return {};
+  },
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -2005,7 +2003,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      conversations: []
+    };
+  },
+  methods: {
+    getConversations: function getConversations() {
+      var _this = this;
+
+      axios.get("/api/conversation").then(function (response) {
+        _this.conversations = response.data;
+      })["catch"](function (error) {
+        alert(error);
+        console.log(error);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getConversations();
+  }
+});
 
 /***/ }),
 
@@ -34673,15 +34697,13 @@ var render = function() {
                   attrs: { cols: "6", "align-self": "center" }
                 },
                 [
-                  _c("p", {
-                    staticClass: "mb-0",
-                    domProps: { textContent: _vm._s(_vm.name) }
-                  }),
+                  _c("p", { staticClass: "mb-0" }, [
+                    _vm._v(_vm._s(_vm.conversation.contact_name))
+                  ]),
                   _vm._v(" "),
-                  _c("p", {
-                    staticClass: "text-muted small mb-0",
-                    domProps: { textContent: _vm._s(_vm.lastMessage) }
-                  })
+                  _c("p", { staticClass: "text-muted small mb-0" }, [
+                    _vm._v(_vm._s(_vm.conversation.last_message))
+                  ])
                 ]
               ),
               _vm._v(" "),
@@ -34689,10 +34711,9 @@ var render = function() {
                 "b-col",
                 { staticClass: "d-none d-md-block", attrs: { cols: "3" } },
                 [
-                  _c("p", {
-                    staticClass: "text-muted small",
-                    domProps: { textContent: _vm._s(_vm.lastTime) }
-                  })
+                  _c("p", { staticClass: "text-muted small" }, [
+                    _vm._v(_vm._s(_vm.conversation.last_time))
+                  ])
                 ]
               )
             ],
@@ -34744,13 +34765,12 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-list-group",
-        [
-          _c("contact-component", { attrs: { variant: "dark" } }),
-          _vm._v(" "),
-          _c("contact-component", { attrs: { variant: "" } }),
-          _vm._v(" "),
-          _c("contact-component", { attrs: { variant: "secondary" } })
-        ],
+        _vm._l(_vm.conversations, function(conversation) {
+          return _c("contact-component", {
+            key: conversation.id,
+            attrs: { conversation: conversation }
+          })
+        }),
         1
       )
     ],
