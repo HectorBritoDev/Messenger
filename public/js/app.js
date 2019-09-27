@@ -1893,7 +1893,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       newMessage: "",
       messages: {},
-      contact_id: 14
+      contact_id: 4
     };
   },
   methods: {

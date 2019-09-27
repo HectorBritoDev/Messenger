@@ -54,7 +54,7 @@ export default {
     return {
       newMessage: "",
       messages: {},
-      contact_id: 14
+      contact_id: 4
     };
   },
   methods: {
