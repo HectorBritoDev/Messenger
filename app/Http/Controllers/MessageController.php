@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSend;
 use App\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,8 @@ class MessageController extends Controller
 
         $data = [];
         $data['success'] = $saved;
+
+        event(new MessageSend($message));
         return $data;
     }
 

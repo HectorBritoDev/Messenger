@@ -40,7 +40,7 @@
         alt="img"
         class="mt-1"
       ></b-img>
-      <p>Usuario seleccionado</p>
+      <p v-text="contactName"></p>
       <hr />
 
       <b-form-checkbox>Desactivar notificaciones</b-form-checkbox>
@@ -50,28 +50,20 @@
 
 <script>
 export default {
+  props: {
+    contactId: Number,
+    contactName: String,
+    messages: Array
+  },
   data() {
     return {
-      newMessage: "",
-      messages: {},
-      contact_id: 4
+      newMessage: ""
     };
   },
   methods: {
-    getMessages() {
-      axios
-        .get("/api/message?contact_id=" + this.contact_id)
-        .then(response => {
-          this.messages = response.data;
-        })
-        .catch(error => {
-          aler(error);
-          console.log(error);
-        });
-    },
     postMessage() {
       const params = {
-        to_id: 2,
+        to_id: this.contactId,
         content: this.newMessage
       };
       axios
@@ -79,17 +71,14 @@ export default {
         .then(response => {
           console.log(response.data);
           this.newMessage = "";
-          this.getMessages();
         })
         .catch(error => {
-          aler(error);
+          alert(error);
           console.log(error);
         });
     }
   },
-  mounted() {
-    this.getMessages();
-  }
+  mounted() {}
 };
 </script>
 
