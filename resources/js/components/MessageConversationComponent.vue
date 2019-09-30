@@ -11,9 +11,7 @@
 export default {
   props: { writtenByMe: Boolean },
   data() {
-    return {
-      content: "abc"
-    };
+    return {};
   }
 };
 </script>

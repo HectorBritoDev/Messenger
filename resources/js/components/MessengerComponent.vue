@@ -2,7 +2,10 @@
   <b-container fluid style="height: calc(100vh - 56px);">
     <b-row no-gutters class="h-100">
       <b-col cols="4">
-        <contact-list-component @conversationSelected="changeActiveConversation($event)"></contact-list-component>
+        <contact-list-component
+          @conversationSelected="changeActiveConversation($event)"
+          :conversations="conversations"
+        ></contact-list-component>
       </b-col>
       <b-col cols="8">
         <active-conversation-component
@@ -10,6 +13,7 @@
           :contact-id="selectedConversation.contact_id"
           :contact-name="selectedConversation.contact_name"
           :messages="messages"
+          @messageCreated="addMessage($event)"
         ></active-conversation-component>
       </b-col>
     </b-row>
@@ -24,7 +28,8 @@ export default {
   data() {
     return {
       selectedConversation: null,
-      messages: []
+      messages: [],
+      conversations: []
     };
   },
   methods: {
@@ -42,17 +47,59 @@ export default {
           alert(error);
           console.log(error);
         });
+    },
+    addMessage(message) {
+      // ID de Conversación a actualizar last message y last_time
+      // Una donde el yo O ESTE RECIBIENDO UN MENSAJE o UNA DONDE YO SEA QUIEN ENVIA EL MENSAJE
+      const conversation = this.conversations.find(conversation => {
+        return (
+          conversation.contact_id == message.from_id ||
+          conversation.contact_id == message.to_id
+        );
+      });
+      const author =
+        this.userId == message.from_id ? "Tú" : message.contact_name;
+
+      conversation.last_message = author + ":" + message.content;
+      conversation.last_time = message.created_at;
+
+      if (
+        this.selectedConversation.contact_id == message.from_id ||
+        this.selectedConversation.contact_id == message.to_id
+      ) {
+        //El calculo de written_by_me se hace
+        //bien sea cuando se recibe un mensaje del canal(Mounted) o cuando se registra un mensaje(PostMessage)
+        this.messages.push(message);
+      }
+    },
+    getConversations() {
+      axios
+        .get("/api/conversation")
+        .then(response => {
+          this.conversations = response.data;
+        })
+        .catch(error => {
+          alert(error);
+          console.log(error);
+        });
     }
   },
+
   mounted() {
-    Echo.channel("example").listen("MessageSend", data => {
+    this.getConversations();
+
+    Echo.channel("users." + this.userId).listen("MessageSend", data => {
       const message = data.message;
-      message.written_by_me = this.userId == message.from_id;
-      this.messages.push(message);
+      message.writte_by_me = false;
+      this.addMessage(message);
     });
   }
 };
 </script>
 
 <style>
+.scroll {
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+}
 </style>

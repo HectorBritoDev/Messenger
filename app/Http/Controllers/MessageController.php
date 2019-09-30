@@ -45,6 +45,7 @@ class MessageController extends Controller
 
         $data = [];
         $data['success'] = $saved;
+        $data['message'] = $message;
 
         event(new MessageSend($message));
         return $data;

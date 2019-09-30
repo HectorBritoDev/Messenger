@@ -3,7 +3,7 @@
     <b-form class="my-3 mx-2">
       <b-form-input type="text" placeholder="Buscar contacto" class="text-center"></b-form-input>
     </b-form>
-    <b-list-group>
+    <b-list-group class="scroll">
       <contact-component
         v-for="conversation in conversations"
         :key="conversation.id"
@@ -19,30 +19,18 @@
 
 <script>
 export default {
+  props: {
+    conversations: Array
+  },
   data() {
-    return {
-      conversations: []
-    };
+    return {};
   },
   methods: {
-    getConversations() {
-      axios
-        .get("/api/conversation")
-        .then(response => {
-          this.conversations = response.data;
-        })
-        .catch(error => {
-          alert(error);
-          console.log(error);
-        });
-    },
     selectConversation(conversation) {
       this.$emit("conversationSelected", conversation);
     }
   },
-  mounted() {
-    this.getConversations();
-  }
+  mounted() {}
 };
 </script>
 

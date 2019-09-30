@@ -2,16 +2,21 @@
   <b-row class="h-100">
     <b-col cols="8">
       <b-card
+        no-body
         footer-bg-variant="light"
         footer-border-variant="dark"
         title="Conversación activa"
         class="h-100"
       >
-        <message-conversation-component
-          v-for="message in messages"
-          :key="message.id"
-          :written-by-me="message.written_by_me"
-        >{{ message.content }}</message-conversation-component>
+        <b-card-body class="scroll" id="conversation-card-body">
+          <message-conversation-component
+            v-for="message in messages"
+            :key="message.id"
+            :written-by-me="message.written_by_me"
+          >{{ message.content }}</message-conversation-component>
+        </b-card-body>
+
+        <div id="messages-container"></div>
 
         <div slot="footer">
           <b-form class="mb-0" @submit.prevent="postMessage" autocomplete="off">
@@ -71,12 +76,22 @@ export default {
         .then(response => {
           console.log(response.data);
           this.newMessage = "";
+          const message = response.data.message;
+          message.written_by_me = true;
+          this.$emit("messageCreated", message);
         })
         .catch(error => {
           alert(error);
           console.log(error);
         });
+    },
+    scrollToBottom() {
+      const el = document.querySelector("#conversation-card-body");
+      el.scrollTop = el.scrollHeight;
     }
+  },
+  updated() {
+    this.scrollToBottom();
   },
   mounted() {}
 };
