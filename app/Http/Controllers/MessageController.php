@@ -37,18 +37,24 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
-        $message = new Message;
-        $message->from_id = auth()->user()->id;
-        $message->to_id = $request->to_id;
-        $message->content = $request->content;
-        $saved = $message->save();
+        try {
+            $message = new Message;
+            $message->from_id = auth()->user()->id;
+            $message->to_id = $request->to_id;
+            $message->content = $request->content;
+            $saved = $message->save();
 
-        $data = [];
-        $data['success'] = $saved;
-        $data['message'] = $message;
+            $data = [];
+            $data['success'] = $saved;
+            $data['message'] = $message;
 
-        event(new MessageSend($message));
-        return $data;
+            event(new MessageSend($message));
+            return $data;
+
+        } catch (\Throwable $th) {
+            return ['error' => $th->getMessage()];
+        }
+
     }
 
     public function show(Message $message)

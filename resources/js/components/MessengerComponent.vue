@@ -58,14 +58,15 @@ export default {
         );
       });
       const author =
-        this.userId == message.from_id ? "Tú" : message.contact_name;
+        this.userId == message.from_id ? "Tú" : conversation.contact_name;
 
       conversation.last_message = author + ":" + message.content;
       conversation.last_time = message.created_at;
 
       if (
-        this.selectedConversation.contact_id == message.from_id ||
-        this.selectedConversation.contact_id == message.to_id
+        this.selectedConversation &&
+        (this.selectedConversation.contact_id == message.from_id ||
+          this.selectedConversation.contact_id == message.to_id)
       ) {
         //El calculo de written_by_me se hace
         //bien sea cuando se recibe un mensaje del canal(Mounted) o cuando se registra un mensaje(PostMessage)
@@ -87,12 +88,22 @@ export default {
 
   mounted() {
     this.getConversations();
-
     Echo.private("users." + this.userId).listen("MessageSend", data => {
       const message = data.message;
       message.writte_by_me = false;
       this.addMessage(message);
     });
+
+    // Echo.join("messenger")
+    //   .here(users => {
+    //     console.log("online", users);
+    //   })
+    //   .joining(user => {
+    //     console.log(user.id);
+    //   })
+    //   .leaving(user => {
+    //     console.log(user.id);
+    //   });
   }
 };
 </script>

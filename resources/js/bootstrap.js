@@ -33,12 +33,13 @@ if (token) {
 import Echo from 'laravel-echo'
 
 window.Pusher = require('pusher-js');
-
+console.log(token.content);
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '40bc90087d91227569f1',
     cluster: 'us2',
-    encrypted: true
+    encrypted: true,
+    csrfToken: token.content //El token se usa es cuando declaramos canales privados y presenciales
 });
 
 //Date && times format

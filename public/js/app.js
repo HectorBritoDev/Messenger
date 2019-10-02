@@ -1973,6 +1973,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     variant: String,
@@ -1983,7 +1986,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     lastTime: function lastTime() {
-      console.log(this.conversation.last_time);
       return moment(this.conversation.last_time, "YYYY-MM-DD HH:mm:ss").locale("es").fromNow();
     }
   },
@@ -2129,11 +2131,11 @@ __webpack_require__.r(__webpack_exports__);
       var conversation = this.conversations.find(function (conversation) {
         return conversation.contact_id == message.from_id || conversation.contact_id == message.to_id;
       });
-      var author = this.userId == message.from_id ? "Tú" : message.contact_name;
+      var author = this.userId == message.from_id ? "Tú" : conversation.contact_name;
       conversation.last_message = author + ":" + message.content;
       conversation.last_time = message.created_at;
 
-      if (this.selectedConversation.contact_id == message.from_id || this.selectedConversation.contact_id == message.to_id) {
+      if (this.selectedConversation && (this.selectedConversation.contact_id == message.from_id || this.selectedConversation.contact_id == message.to_id)) {
         //El calculo de written_by_me se hace
         //bien sea cuando se recibe un mensaje del canal(Mounted) o cuando se registra un mensaje(PostMessage)
         this.messages.push(message);
@@ -2159,7 +2161,16 @@ __webpack_require__.r(__webpack_exports__);
       message.writte_by_me = false;
 
       _this3.addMessage(message);
-    });
+    }); // Echo.join("messenger")
+    //   .here(users => {
+    //     console.log("online", users);
+    //   })
+    //   .joining(user => {
+    //     console.log(user.id);
+    //   })
+    //   .leaving(user => {
+    //     console.log(user.id);
+    //   });
   }
 });
 
@@ -62299,9 +62310,28 @@ var render = function() {
                   attrs: { cols: "6", "align-self": "center" }
                 },
                 [
-                  _c("p", { staticClass: "mb-0" }, [
-                    _vm._v(_vm._s(_vm.conversation.contact_name))
-                  ]),
+                  _c(
+                    "p",
+                    { staticClass: "mb-0" },
+                    [
+                      _c("b-img", {
+                        attrs: {
+                          rounded: "circle",
+                          blank: "",
+                          width: "10",
+                          height: "10",
+                          "blank-color": "gray",
+                          alt: "img"
+                        }
+                      }),
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.conversation.contact_name) +
+                          "\n        "
+                      )
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c("p", { staticClass: "text-muted small mb-0" }, [
                     _vm._v(_vm._s(_vm.conversation.last_message))
@@ -74726,11 +74756,14 @@ if (token) {
 
 
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
+console.log(token.content);
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_2__["default"]({
   broadcaster: 'pusher',
   key: '40bc90087d91227569f1',
   cluster: 'us2',
-  encrypted: true
+  encrypted: true,
+  csrfToken: token.content //El token se usa es cuando declaramos canales privados y presenciales
+
 }); //Date && times format
 
 window.moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
