@@ -40,3 +40,6 @@ window.Echo = new Echo({
     cluster: 'us2',
     encrypted: true
 });
+
+//Date && times format
+window.moment = require('moment');
