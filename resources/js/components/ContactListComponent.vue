@@ -1,7 +1,13 @@
 <template>
   <div>
-    <b-form class="my-3 mx-2">
-      <b-form-input type="text" placeholder="Buscar contacto" class="text-center"></b-form-input>
+    <b-form class="my-3 mx-2" @submit.prevent="searchConversation">
+      <b-form-input
+        type="text"
+        placeholder="Buscar contacto"
+        class="text-center"
+        v-model="search"
+        @keyup="searchConversation"
+      ></b-form-input>
     </b-form>
     <b-list-group class="scroll">
       <contact-component
@@ -23,11 +29,16 @@ export default {
     conversations: Array
   },
   data() {
-    return {};
+    return {
+      search: ""
+    };
   },
   methods: {
     selectConversation(conversation) {
       this.$emit("conversationSelected", conversation);
+    },
+    searchConversation() {
+      this.$emit("searchConversation", this.search);
     }
   },
   mounted() {}

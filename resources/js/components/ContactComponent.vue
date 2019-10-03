@@ -14,10 +14,8 @@
           ></b-img>
         </b-col>
         <b-col cols="6" align-self="center" class="d-none d-md-block">
-          <p class="mb-0">
-            <b-img rounded="circle" blank width="10" height="10" blank-color="gray" alt="img"></b-img>
-            {{ conversation.contact_name }}
-          </p>
+          <status-component :online="conversation.online"></status-component>
+          <p class="mb-0">{{ conversation.contact_name }}</p>
           <p class="text-muted small mb-0">{{ conversation.last_message }}</p>
         </b-col>
         <b-col cols="3" class="d-none d-md-block">

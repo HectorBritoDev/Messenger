@@ -4,7 +4,8 @@
       <b-col cols="4">
         <contact-list-component
           @conversationSelected="changeActiveConversation($event)"
-          :conversations="conversations"
+          @searchConversation="searchConversation($event)"
+          :conversations="conversationsFiltered"
         ></contact-list-component>
       </b-col>
       <b-col cols="8">
@@ -29,7 +30,8 @@ export default {
     return {
       selectedConversation: null,
       messages: [],
-      conversations: []
+      conversations: [],
+      querySearch: ""
     };
   },
   methods: {
@@ -83,6 +85,27 @@ export default {
           alert(error);
           console.log(error);
         });
+    },
+    changeStatus(user, status) {
+      const conversation = this.conversations.find(conversation => {
+        return conversation.contact_id == user.id;
+      });
+      if (typeof conversation != "undefined") {
+        this.$set(conversation, "online", status);
+      }
+    },
+    searchConversation(query) {
+      this.querySearch = query;
+    }
+  },
+
+  computed: {
+    conversationsFiltered() {
+      return this.conversations.filter(conversation =>
+        conversation.contact_name
+          .toLowerCase()
+          .includes(this.querySearch.toLowerCase())
+      );
     }
   },
 
@@ -94,16 +117,10 @@ export default {
       this.addMessage(message);
     });
 
-    // Echo.join("messenger")
-    //   .here(users => {
-    //     console.log("online", users);
-    //   })
-    //   .joining(user => {
-    //     console.log(user.id);
-    //   })
-    //   .leaving(user => {
-    //     console.log(user.id);
-    //   });
+    Echo.join("messenger")
+      .here(users => users.forEach(user => this.changeStatus(user, true)))
+      .joining(user => this.changeStatus(user, true))
+      .leaving(user => this.changeStatus(user, false));
   }
 };
 </script>
