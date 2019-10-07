@@ -12,6 +12,7 @@ Vue.component('active-conversation-component', require('./components/ActiveConve
 Vue.component('message-conversation-component', require('./components/MessageConversationComponent.vue').default);
 Vue.component('messenger-component', require('./components/MessengerComponent.vue').default);
 Vue.component('status-component', require('./components/StatusComponent.vue').default);
+Vue.component('profile-form-component', require('./components/ProfileFormComponent.vue').default);
 
 
 const app = new Vue({

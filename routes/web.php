@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+Route::put('/user', 'UserController@update')->name('user.update');
+route::resource('user', 'UserController')->only('edit');
 Route::resource('/api/conversation', 'ConversationController')->only('index', 'store', 'update', 'destroy');
 Route::resource('/api/message', 'MessageController')->only('index', 'store', 'update', 'destroy');

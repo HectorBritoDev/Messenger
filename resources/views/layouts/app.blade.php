@@ -24,7 +24,7 @@
         <div id="app" class="h-100">
             <b-navbar toggleable="sm" type="dark" variant="primary">
                 <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
-                <b-navbar-brand href="{{ url('/') }}">
+                <b-navbar-brand href="{{ url('/home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </b-navbar-brand>
                 <b-collapse id="nav-text-collapse" is-nav>
@@ -37,6 +37,8 @@
                         <!-- Navbar dropdowns -->
 
                         <b-nav-item-dropdown text="{{ Auth::user()->name }}" right>
+                            <b-dropdown-item href="{{ route('user.edit',auth()->user()->id) }}">Modificar perfil
+                            </b-dropdown-item>
                             <b-dropdown-item href="#" @click.prevent="logout">Cerrar sesión</b-dropdown-item>
                         </b-nav-item-dropdown>
                         @endguest

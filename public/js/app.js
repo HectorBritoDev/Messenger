@@ -2208,6 +2208,150 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ProfileFormComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ProfileFormComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    user: Object
+  },
+  data: function data() {
+    return {
+      newPassword: "",
+      newPasswordConfirmation: "",
+      picture: null
+    };
+  },
+  computed: {
+    nameValidation: function nameValidation() {
+      return this.user.name.length >= 0;
+    },
+    passwordValidation: function passwordValidation() {
+      return this.newPassword.length >= 6 || this.newPassword.length == 0;
+    },
+    passwordConfirmationValidation: function passwordConfirmationValidation() {
+      return this.newPassword == this.newPasswordConfirmation;
+    },
+    actualPicture: function actualPicture() {
+      return "/users/" + this.user.avatar;
+    }
+  },
+  methods: {
+    onSubmit: function onSubmit() {
+      var _this = this;
+
+      var params = {
+        name: this.user.name,
+        password: this.newPassword,
+        password_confirmation: this.newPasswordConfirmation,
+        picture: this.picture
+      };
+      var form = new FormData(document.querySelector("#form"));
+      form.append("name", this.user.name);
+      form.append("password", this.newPassword);
+      form.append("password_confirmation", this.newPasswordConfirmation);
+      form.append("picture", this.picture);
+      form.append("_method", "PUT"); //console.log(form.values());
+
+      axios.post("/user", form).then(function (response) {
+        alert("Actualizado correctamente");
+        _this.newPassword = "";
+        _this.newPasswordConfirmation = "";
+        _this.user = response.data;
+      })["catch"](function (error) {
+        alert("error");
+        console.log(error);
+      });
+    } // handlePicture(event) {
+    //   this.picture = event.target.files[0];
+    //   console.log(this.picture);
+    // }
+
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StatusComponent.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/StatusComponent.vue?vue&type=script&lang=js& ***!
@@ -62613,6 +62757,238 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ProfileFormComponent.vue?vue&type=template&id=1058e65b&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ProfileFormComponent.vue?vue&type=template&id=1058e65b& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-container",
+    { staticClass: "m-3" },
+    [
+      _c(
+        "b-card",
+        { attrs: { title: "Perfil de " + _vm.user.name } },
+        [
+          _c(
+            "b-form",
+            {
+              attrs: { id: "form" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.onSubmit($event)
+                }
+              }
+            },
+            [
+              _c(
+                "b-form-group",
+                { attrs: { label: "Correo electrónico:" } },
+                [
+                  _c("b-form-input", {
+                    attrs: { type: "text", disabled: "" },
+                    model: {
+                      value: _vm.user.email,
+                      callback: function($$v) {
+                        _vm.$set(_vm.user, "email", $$v)
+                      },
+                      expression: "user.email"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-form-group",
+                [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Nombre")
+                  ]),
+                  _vm._v(" "),
+                  _c("b-form-input", {
+                    attrs: {
+                      placeholder: "Ingresa tu nombre",
+                      state: _vm.nameValidation,
+                      id: "userName"
+                    },
+                    model: {
+                      value: _vm.user.name,
+                      callback: function($$v) {
+                        _vm.$set(_vm.user, "name", $$v)
+                      },
+                      expression: "user.name"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-invalid-feedback",
+                    { attrs: { state: _vm.nameValidation } },
+                    [_vm._v("Debes ingresar un nombre")]
+                  ),
+                  _vm._v(" "),
+                  _c("b-form-valid-feedback", {
+                    attrs: { state: _vm.nameValidation }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-form-group",
+                { attrs: { label: "Nueva contraseña(opcional):" } },
+                [
+                  _c("b-form-input", {
+                    attrs: {
+                      type: "password",
+                      placeholer: "Ingrese nueva contraseña",
+                      state: _vm.passwordValidation
+                    },
+                    model: {
+                      value: _vm.newPassword,
+                      callback: function($$v) {
+                        _vm.newPassword = $$v
+                      },
+                      expression: "newPassword"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-invalid-feedback",
+                    { attrs: { state: _vm.passwordValidation } },
+                    [_vm._v("Debes ingresar una contraseña")]
+                  ),
+                  _vm._v(" "),
+                  _c("b-form-valid-feedback", {
+                    attrs: { state: _vm.passwordValidation }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _vm.newPassword.length > 0
+                ? _c(
+                    "b-form-group",
+                    { attrs: { label: "Confirmar nueva contraseña:" } },
+                    [
+                      _c(
+                        "b-form-input",
+                        {
+                          attrs: {
+                            type: "password",
+                            state: _vm.passwordConfirmationValidation,
+                            placeholder: "Reingrese la contraseña"
+                          },
+                          model: {
+                            value: _vm.newPasswordConfirmation,
+                            callback: function($$v) {
+                              _vm.newPasswordConfirmation = $$v
+                            },
+                            expression: "newPasswordConfirmation"
+                          }
+                        },
+                        [
+                          _c(
+                            "b-form-invalid-feedback",
+                            {
+                              attrs: {
+                                state: _vm.passwordConfirmationValidation
+                              }
+                            },
+                            [_vm._v("Las contraseñas no coinciden")]
+                          ),
+                          _vm._v(" "),
+                          _c("b-form-valid-feedback", {
+                            attrs: { state: _vm.passwordConfirmationValidation }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "b-form-group",
+                { attrs: { label: "Imagen de perfil (opcional):" } },
+                [
+                  _c("b-img", {
+                    staticClass: "p-1",
+                    attrs: {
+                      src: _vm.actualPicture,
+                      title: "Imagen Actual",
+                      rounded: "circle",
+                      width: "100",
+                      height: "100",
+                      alt: "img",
+                      center: ""
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("b-form-file", {
+                    attrs: {
+                      id: "pictureFile",
+                      accept: "image/jpeg, image/png",
+                      placehoder: "Selecciona o arrastra tu imagen hasta aquí",
+                      "drop-placeholder": "Sueltalo aquí"
+                    },
+                    model: {
+                      value: _vm.picture,
+                      callback: function($$v) {
+                        _vm.picture = $$v
+                      },
+                      expression: "picture"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "text-center",
+                  attrs: { slot: "footer" },
+                  slot: "footer"
+                },
+                [
+                  _c(
+                    "b-button",
+                    { attrs: { type: "submit", variant: "primary" } },
+                    [_vm._v("Aceptar")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StatusComponent.vue?vue&type=template&id=08ccbc10&":
 /*!******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/StatusComponent.vue?vue&type=template&id=08ccbc10& ***!
@@ -74804,6 +75180,7 @@ Vue.component('active-conversation-component', __webpack_require__(/*! ./compone
 Vue.component('message-conversation-component', __webpack_require__(/*! ./components/MessageConversationComponent.vue */ "./resources/js/components/MessageConversationComponent.vue")["default"]);
 Vue.component('messenger-component', __webpack_require__(/*! ./components/MessengerComponent.vue */ "./resources/js/components/MessengerComponent.vue")["default"]);
 Vue.component('status-component', __webpack_require__(/*! ./components/StatusComponent.vue */ "./resources/js/components/StatusComponent.vue")["default"]);
+Vue.component('profile-form-component', __webpack_require__(/*! ./components/ProfileFormComponent.vue */ "./resources/js/components/ProfileFormComponent.vue")["default"]);
 var app = new Vue({
   el: '#app',
   methods: {
@@ -75232,6 +75609,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MessengerComponent_vue_vue_type_template_id_54eee856___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MessengerComponent_vue_vue_type_template_id_54eee856___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/ProfileFormComponent.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/ProfileFormComponent.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ProfileFormComponent_vue_vue_type_template_id_1058e65b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProfileFormComponent.vue?vue&type=template&id=1058e65b& */ "./resources/js/components/ProfileFormComponent.vue?vue&type=template&id=1058e65b&");
+/* harmony import */ var _ProfileFormComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProfileFormComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/ProfileFormComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ProfileFormComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ProfileFormComponent_vue_vue_type_template_id_1058e65b___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ProfileFormComponent_vue_vue_type_template_id_1058e65b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ProfileFormComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ProfileFormComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/ProfileFormComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ProfileFormComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ProfileFormComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ProfileFormComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ProfileFormComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ProfileFormComponent.vue?vue&type=template&id=1058e65b&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/ProfileFormComponent.vue?vue&type=template&id=1058e65b& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProfileFormComponent_vue_vue_type_template_id_1058e65b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ProfileFormComponent.vue?vue&type=template&id=1058e65b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ProfileFormComponent.vue?vue&type=template&id=1058e65b&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProfileFormComponent_vue_vue_type_template_id_1058e65b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProfileFormComponent_vue_vue_type_template_id_1058e65b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
