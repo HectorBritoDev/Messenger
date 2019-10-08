@@ -41,6 +41,8 @@ export default {
       this.$emit("conversationSelected", conversation);
     },
     searchConversation() {
+      //Este formulario no deberia estar aquí porque cada vez que se actualizara el valor de la caja de texto se tendria que notificar el cambio al componente padre
+      //Pero se hizo por motivos de prueba y aprendizaje
       this.$emit("searchConversation", this.search);
     }
   },

@@ -2039,6 +2039,8 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit("conversationSelected", conversation);
     },
     searchConversation: function searchConversation() {
+      //Este formulario no deberia estar aquí porque cada vez que se actualizara el valor de la caja de texto se tendria que notificar el cambio al componente padre
+      //Pero se hizo por motivos de prueba y aprendizaje
       this.$emit("searchConversation", this.search);
     }
   },
@@ -2181,6 +2183,7 @@ __webpack_require__.r(__webpack_exports__);
     conversationsFiltered: function conversationsFiltered() {
       var _this3 = this;
 
+      //Filter es case sensitive
       return this.conversations.filter(function (conversation) {
         return conversation.contact_name.toLowerCase().includes(_this3.querySearch.toLowerCase());
       });

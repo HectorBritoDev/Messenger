@@ -103,6 +103,7 @@ export default {
 
   computed: {
     conversationsFiltered() {
+      //Filter es case sensitive
       return this.conversations.filter(conversation =>
         conversation.contact_name
           .toLowerCase()
