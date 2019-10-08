@@ -14,6 +14,7 @@
         v-for="conversation in conversations"
         :key="conversation.id"
         :conversation="conversation"
+        :selected="selectConversationId === conversation.id"
         @click.native="selectConversation(conversation)"
       ></contact-component>
       <!-- <contact-component variant="dark"></contact-component>
@@ -30,11 +31,13 @@ export default {
   },
   data() {
     return {
+      selectConversationId: null,
       search: ""
     };
   },
   methods: {
     selectConversation(conversation) {
+      this.selectConversationId = conversation.id;
       this.$emit("conversationSelected", conversation);
     },
     searchConversation() {

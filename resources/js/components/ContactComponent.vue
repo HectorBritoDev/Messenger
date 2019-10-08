@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  props: { variant: String, conversation: Object },
+  props: { conversation: Object, selected: Boolean },
   data() {
     return {};
   },
@@ -36,6 +36,9 @@ export default {
       return moment(this.conversation.last_time, "YYYY-MM-DD HH:mm:ss")
         .locale("es")
         .fromNow();
+    },
+    variant() {
+      return this.selected ? "secondary" : "";
     }
   },
   mounted() {}

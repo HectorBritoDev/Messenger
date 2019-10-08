@@ -1969,8 +1969,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    variant: String,
-    conversation: Object
+    conversation: Object,
+    selected: Boolean
   },
   data: function data() {
     return {};
@@ -1978,6 +1978,9 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     lastTime: function lastTime() {
       return moment(this.conversation.last_time, "YYYY-MM-DD HH:mm:ss").locale("es").fromNow();
+    },
+    variant: function variant() {
+      return this.selected ? "secondary" : "";
     }
   },
   mounted: function mounted() {}
@@ -2019,17 +2022,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     conversations: Array
   },
   data: function data() {
     return {
+      selectConversationId: null,
       search: ""
     };
   },
   methods: {
     selectConversation: function selectConversation(conversation) {
+      this.selectConversationId = conversation.id;
       this.$emit("conversationSelected", conversation);
     },
     searchConversation: function searchConversation() {
@@ -62613,7 +62619,10 @@ var render = function() {
         _vm._l(_vm.conversations, function(conversation) {
           return _c("contact-component", {
             key: conversation.id,
-            attrs: { conversation: conversation },
+            attrs: {
+              conversation: conversation,
+              selected: _vm.selectConversationId === conversation.id
+            },
             nativeOn: {
               click: function($event) {
                 return _vm.selectConversation(conversation)
