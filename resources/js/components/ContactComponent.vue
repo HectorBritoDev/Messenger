@@ -4,12 +4,11 @@
       <b-row class="p-2" align-h="center">
         <b-col cols="12" md="3" class="text-center">
           <b-img
+            :src="conversation.contact_avatar"
             rounded="circle"
-            blank
             width="60"
             height="60"
-            blank-color="#777"
-            alt="img"
+            :alt="conversation.contact_name"
             class="mt-1"
           ></b-img>
         </b-col>

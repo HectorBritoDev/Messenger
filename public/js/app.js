@@ -1884,23 +1884,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     contactId: Number,
     contactName: String,
+    contactAvatar: String,
     messages: Array
   },
   data: function data() {
     return {
+      userAvatar: "/users/" + Laravel.user.avatar,
+      //Property set in app.blade.php
       newMessage: ""
     };
   },
@@ -1946,7 +1940,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -2068,7 +2061,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    writtenByMe: Boolean
+    writtenByMe: Boolean,
+    avatar: String
   },
   data: function data() {
     return {};
@@ -2109,9 +2103,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    userId: Number
+    authUser: Object
   },
   data: function data() {
     return {
@@ -2142,7 +2138,7 @@ __webpack_require__.r(__webpack_exports__);
       var conversation = this.conversations.find(function (conversation) {
         return conversation.contact_id == message.from_id || conversation.contact_id == message.to_id;
       });
-      var author = this.userId == message.from_id ? "Tú" : conversation.contact_name;
+      var author = this.authUser.id == message.from_id ? "Tú" : conversation.contact_name;
       conversation.last_message = author + ":" + message.content;
       conversation.last_time = message.created_at;
 
@@ -2182,13 +2178,16 @@ __webpack_require__.r(__webpack_exports__);
       return this.conversations.filter(function (conversation) {
         return conversation.contact_name.toLowerCase().includes(_this3.querySearch.toLowerCase());
       });
+    },
+    authUserAvatarUrl: function authUserAvatarUrl() {
+      return "/users/" + this.authUser.avatar;
     }
   },
   mounted: function mounted() {
     var _this4 = this;
 
     this.getConversations();
-    Echo["private"]("users." + this.userId).listen("MessageSend", function (data) {
+    Echo["private"]("users." + this.authUser.id).listen("MessageSend", function (data) {
       var message = data.message;
       message.writte_by_me = false;
 
@@ -2299,7 +2298,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       newPassword: "",
       newPasswordConfirmation: "",
-      picture: null
+      picture: null,
+      updatedPicture: ""
     };
   },
   computed: {
@@ -2313,7 +2313,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.newPassword == this.newPasswordConfirmation;
     },
     actualPicture: function actualPicture() {
-      return "/users/" + this.user.avatar;
+      return "/users/" + (this.updatedPicture ? this.updatedPicture : this.user.avatar);
     }
   },
   methods: {
@@ -2337,7 +2337,7 @@ __webpack_require__.r(__webpack_exports__);
         alert("Actualizado correctamente");
         _this.newPassword = "";
         _this.newPasswordConfirmation = "";
-        _this.user = response.data;
+        _this.updatedPicture = response.data.avatar;
       })["catch"](function (error) {
         alert("error");
         console.log(error);
@@ -62358,15 +62358,18 @@ var render = function() {
                     "message-conversation-component",
                     {
                       key: message.id,
-                      attrs: { "written-by-me": message.written_by_me }
+                      attrs: {
+                        "written-by-me": message.written_by_me,
+                        avatar: message.written_by_me
+                          ? _vm.userAvatar
+                          : _vm.contactAvatar
+                      }
                     },
                     [_vm._v(_vm._s(message.content))]
                   )
                 }),
                 1
               ),
-              _vm._v(" "),
-              _c("div", { attrs: { id: "messages-container" } }),
               _vm._v(" "),
               _c(
                 "div",
@@ -62439,11 +62442,10 @@ var render = function() {
           _c("b-img", {
             staticClass: "mt-1",
             attrs: {
+              src: _vm.contactAvatar,
               rounded: "circle",
-              blank: "",
               width: "60",
               height: "60",
-              "blank-color": "#777",
               alt: "img"
             }
           }),
@@ -62500,12 +62502,11 @@ var render = function() {
                   _c("b-img", {
                     staticClass: "mt-1",
                     attrs: {
+                      src: _vm.conversation.contact_avatar,
                       rounded: "circle",
-                      blank: "",
                       width: "60",
                       height: "60",
-                      "blank-color": "#777",
-                      alt: "img"
+                      alt: _vm.conversation.contact_name
                     }
                   })
                 ],
@@ -62658,11 +62659,10 @@ var render = function() {
       _c("b-img", {
         attrs: {
           slot: "aside",
+          src: _vm.avatar,
           rounded: "circle",
-          blank: "",
           width: "48",
           height: "48",
-          "blank-color": "#ccc",
           alt: "img"
         },
         slot: "aside"
@@ -62731,6 +62731,8 @@ var render = function() {
                     attrs: {
                       "contact-id": _vm.selectedConversation.contact_id,
                       "contact-name": _vm.selectedConversation.contact_name,
+                      "contact-avatar": _vm.selectedConversation.contact_avatar,
+                      "user-avatar": _vm.authUserAvatarUrl,
                       messages: _vm.messages
                     },
                     on: {

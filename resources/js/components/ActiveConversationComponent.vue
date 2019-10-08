@@ -13,10 +13,9 @@
             v-for="message in messages"
             :key="message.id"
             :written-by-me="message.written_by_me"
+            :avatar="message.written_by_me ? userAvatar : contactAvatar"
           >{{ message.content }}</message-conversation-component>
         </b-card-body>
-
-        <div id="messages-container"></div>
 
         <div slot="footer">
           <b-form class="mb-0" @submit.prevent="postMessage" autocomplete="off">
@@ -36,15 +35,7 @@
       </b-card>
     </b-col>
     <b-col cols="4">
-      <b-img
-        rounded="circle"
-        blank
-        width="60"
-        height="60"
-        blank-color="#777"
-        alt="img"
-        class="mt-1"
-      ></b-img>
+      <b-img :src="contactAvatar" rounded="circle" width="60" height="60" alt="img" class="mt-1"></b-img>
       <p v-text="contactName"></p>
       <hr />
 
@@ -58,10 +49,12 @@ export default {
   props: {
     contactId: Number,
     contactName: String,
+    contactAvatar: String,
     messages: Array
   },
   data() {
     return {
+      userAvatar: "/users/" + Laravel.user.avatar, //Property set in app.blade.php
       newMessage: ""
     };
   },

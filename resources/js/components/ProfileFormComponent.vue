@@ -1,6 +1,6 @@
 <template>
   <b-container class="m-3">
-    <b-card :title="'Perfil de '+user.name">
+    <b-card :title="'Perfil de '+ user.name">
       <b-form @submit.prevent="onSubmit" id="form">
         <b-form-group label="Correo electrónico:">
           <b-form-input type="text" disabled v-model="user.email"></b-form-input>
@@ -81,7 +81,8 @@ export default {
     return {
       newPassword: "",
       newPasswordConfirmation: "",
-      picture: null
+      picture: null,
+      updatedPicture: ""
     };
   },
   computed: {
@@ -95,7 +96,10 @@ export default {
       return this.newPassword == this.newPasswordConfirmation;
     },
     actualPicture() {
-      return "/users/" + this.user.avatar;
+      return (
+        "/users/" +
+        (this.updatedPicture ? this.updatedPicture : this.user.avatar)
+      );
     }
   },
   methods: {
@@ -120,7 +124,7 @@ export default {
           alert("Actualizado correctamente");
           this.newPassword = "";
           this.newPasswordConfirmation = "";
-          this.user = response.data;
+          this.updatedPicture = response.data.avatar;
         })
         .catch(error => {
           alert("error");

@@ -13,6 +13,8 @@
           v-if="selectedConversation"
           :contact-id="selectedConversation.contact_id"
           :contact-name="selectedConversation.contact_name"
+          :contact-avatar="selectedConversation.contact_avatar"
+          :user-avatar="authUserAvatarUrl"
           :messages="messages"
           @messageCreated="addMessage($event)"
         ></active-conversation-component>
@@ -24,7 +26,7 @@
 <script>
 export default {
   props: {
-    userId: Number
+    authUser: Object
   },
   data() {
     return {
@@ -60,7 +62,7 @@ export default {
         );
       });
       const author =
-        this.userId == message.from_id ? "Tú" : conversation.contact_name;
+        this.authUser.id == message.from_id ? "Tú" : conversation.contact_name;
 
       conversation.last_message = author + ":" + message.content;
       conversation.last_time = message.created_at;
@@ -106,12 +108,15 @@ export default {
           .toLowerCase()
           .includes(this.querySearch.toLowerCase())
       );
+    },
+    authUserAvatarUrl() {
+      return "/users/" + this.authUser.avatar;
     }
   },
 
   mounted() {
     this.getConversations();
-    Echo.private("users." + this.userId).listen("MessageSend", data => {
+    Echo.private("users." + this.authUser.id).listen("MessageSend", data => {
       const message = data.message;
       message.writte_by_me = false;
       this.addMessage(message);
