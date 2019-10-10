@@ -1,20 +1,11 @@
 <template>
   <div>
-    <b-form class="my-3 mx-2" @submit.prevent="searchConversation">
-      <b-form-input
-        type="text"
-        placeholder="Buscar contacto"
-        class="text-center"
-        v-model="search"
-        @keyup="searchConversation"
-      ></b-form-input>
-    </b-form>
     <b-list-group class="scroll">
       <contact-component
-        v-for="conversation in conversations"
+        v-for="conversation in conversationsFiltered"
         :key="conversation.id"
         :conversation="conversation"
-        :selected="selectConversationId === conversation.id"
+        :selected="isSelected(conversation)"
         @click.native="selectConversation(conversation)"
       ></contact-component>
       <!-- <contact-component variant="dark"></contact-component>
@@ -26,27 +17,29 @@
 
 <script>
 export default {
-  props: {
-    conversations: Array
-  },
   data() {
-    return {
-      selectConversationId: null,
-      search: ""
-    };
+    return {};
   },
   methods: {
     selectConversation(conversation) {
-      this.selectConversationId = conversation.id;
-      this.$emit("conversationSelected", conversation);
+      //Se usa dispatch en vez de commit, porque el action getMessages es el que realiza el commit selectConversation
+      this.$store.dispatch("getMessages", conversation);
     },
-    searchConversation() {
-      //Este formulario no deberia estar aquí porque cada vez que se actualizara el valor de la caja de texto se tendria que notificar el cambio al componente padre
-      //Pero se hizo por motivos de prueba y aprendizaje
-      this.$emit("searchConversation", this.search);
+
+    isSelected(conversation) {
+      return conversation
+        ? this.selectedConversation.id === conversation.id
+        : false;
     }
   },
-  mounted() {}
+  computed: {
+    selectedConversation() {
+      return this.$store.state.selectedConversation;
+    },
+    conversationsFiltered() {
+      return this.$store.getters.conversationsFiltered;
+    }
+  }
 };
 </script>
 

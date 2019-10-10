@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
         User::truncate();
         User::flushEventListeners();
 
-        factory(User::class, 1)->create(['name' => 'Héctor', 'email' => 'prueba@test.com', 'password' => bcrypt(123)]);
+        factory(User::class, 1)->create(['name' => 'Héctor', 'email' => 'prueba@test.com', 'password' => '123']);
         factory(User::class, 20)->create();
     }
 }

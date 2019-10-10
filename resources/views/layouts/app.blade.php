@@ -11,8 +11,9 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
         <!-- Scripts -->
         <script>
-            window.Laravel = {}
-            window.Laravel.user = JSON.parse('<?php echo auth()->user() ?>')
+            const auth = '<?php echo auth()->user() ?>';
+            window.Laravel = {};
+            window.Laravel.user = auth ?  JSON.parse(auth) : null;
         </script>
 
         <script src="{{ mix('js/app.js') }}" defer></script>
