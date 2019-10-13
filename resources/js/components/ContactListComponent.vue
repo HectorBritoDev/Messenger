@@ -23,7 +23,10 @@ export default {
   methods: {
     selectConversation(conversation) {
       //Se usa dispatch en vez de commit, porque el action getMessages es el que realiza el commit selectConversation
-      this.$store.dispatch("getMessages", conversation);
+
+      this.$router.push("/chat/" + conversation.id, () =>
+        this.$store.dispatch("getMessages", conversation)
+      );
     },
 
     isSelected(conversation) {

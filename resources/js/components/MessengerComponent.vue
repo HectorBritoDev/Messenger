@@ -39,7 +39,17 @@ export default {
 
   mounted() {
     this.$store.commit("setUser", this.authUser);
-    this.$store.dispatch("getConversations");
+    this.$store.dispatch("getConversations").then(() => {
+      const conversationId = this.$route.params.conversationId;
+
+      if (conversationId) {
+        const conversation = this.$store.getters.getConversationById(
+          conversationId
+        );
+        this.$store.dispatch("getMessages", conversation);
+      }
+    });
+
     Echo.private("users." + this.authUser.id).listen("MessageSend", data => {
       const message = data.message;
       message.writte_by_me = false;

@@ -43,7 +43,6 @@ export default new Vuex.Store({
             ) {
                 //El calculo de written_by_me se hace
                 //bien sea cuando se recibe un mensaje del canal(Mounted) o cuando se registra un mensaje(PostMessage)
-
                 state.messages.push(message);
             }
 
@@ -61,7 +60,7 @@ export default new Vuex.Store({
     },
     actions: { //Cosas asincronas o consultas al server //Las Actions llaman a las mutations
         getMessages(context, conversation) {
-            axios
+            return axios
                 .get("/api/message?contact_id=" + conversation.contact_id)
                 .then(response => {
                     context.commit('selectConversation', conversation);
@@ -70,7 +69,7 @@ export default new Vuex.Store({
                 .catch(error => console.log(error));
         },
         getConversations(context) {
-            axios
+            return axios
                 .get("/api/conversation")
                 .then(response => {
                     context.commit('conversationsList', response.data);
@@ -84,11 +83,11 @@ export default new Vuex.Store({
                 to_id: context.state.selectedConversation.contact_id,
                 content: newMessage
             };
-            axios
+            return axios
                 .post("/api/message", params)
                 .then(response => {
                     console.log(response.data);
-                    const message = response.data.message;
+                    const message = response.data;
                     message.written_by_me = true;
                     context.commit("addMessage", message);
                 })
@@ -106,6 +105,16 @@ export default new Vuex.Store({
                 .toLowerCase()
                 .includes(state.querySearch.toLowerCase())
             );
+        },
+        getConversationById(state) {
+            //Filter es case sensitive
+            return function (conversationId) {
+
+                return state.conversations.find(conversation =>
+                    conversation.id == conversationId
+                );
+            }
+
         },
 
     }

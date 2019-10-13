@@ -30,7 +30,7 @@
         <div id="app" class="h-100">
             <b-navbar toggleable="sm" type="dark" variant="primary">
                 <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
-                <b-navbar-brand href="{{ url('/home') }}">
+                <b-navbar-brand href="{{ url('/chat') }}">
                     {{ config('app.name', 'Laravel') }}
                 </b-navbar-brand>
                 <b-collapse id="nav-text-collapse" is-nav>
