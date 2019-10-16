@@ -5,7 +5,7 @@ namespace App\Events;
 use App\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -28,6 +28,6 @@ class MessageSend implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('users.' . $this->message->to_id);
+        return new PrivateChannel('users.' . $this->message->to_id);
     }
 }

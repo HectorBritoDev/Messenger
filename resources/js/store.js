@@ -19,19 +19,14 @@ export default new Vuex.Store({
             state.messages = messages;
         },
         addMessage(state, message) {
-
-            // ID de Conversación a actualizar last message y last_time
-            // Una donde el yo O ESTE RECIBIENDO UN MENSAJE o UNA DONDE YO SEA QUIEN ENVIA EL MENSAJE
             const conversation = state.conversations.find(
                 conversation => {
-                    return (
-                        conversation.contact_id == message.from_id ||
-                        conversation.contact_id == message.to_id
-                    );
+                    return conversation.contact_id == message.to_id || conversation.contact_id == message.to_id;
                 }
             );
+            console.log(conversation);
             const author =
-                this.authUser.id == message.from_id ? "Tú" : conversation.contact_name;
+                state.user.id == message.from_id ? "Tú" : conversation.contact_name;
 
             conversation.last_message = author + ":" + message.content;
             conversation.last_time = message.created_at;
@@ -45,8 +40,6 @@ export default new Vuex.Store({
                 //bien sea cuando se recibe un mensaje del canal(Mounted) o cuando se registra un mensaje(PostMessage)
                 state.messages.push(message);
             }
-
-
         },
         conversationsList(state, conversations) {
             state.conversations = conversations
@@ -87,12 +80,11 @@ export default new Vuex.Store({
                 .post("/api/message", params)
                 .then(response => {
                     console.log(response.data);
-                    const message = response.data;
+                    const message = response.data.message;
                     message.written_by_me = true;
                     context.commit("addMessage", message);
                 })
                 .catch(error => {
-                    alert(error);
                     console.log(error);
                 });
         },

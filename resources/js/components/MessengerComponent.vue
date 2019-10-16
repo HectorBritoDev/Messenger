@@ -29,6 +29,9 @@ export default {
         this.$set(conversation, "online", status);
       }
     }
+    // addMessage(message) {
+    //   this.$store.commit("addMessage", message);
+    // }
   },
 
   computed: {
@@ -53,7 +56,8 @@ export default {
     Echo.private("users." + this.authUser.id).listen("MessageSend", data => {
       const message = data.message;
       message.writte_by_me = false;
-      this.addMessage(message);
+      this.$store.commit("addMessage", message);
+      // this.addMessage(message);
     });
 
     Echo.join("messenger")

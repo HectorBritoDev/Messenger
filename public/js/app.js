@@ -1893,7 +1893,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     postMessage: function postMessage() {
-      this.$store.dispatch("postMessage", this.newMessage);
+      var _this = this;
+
+      this.$store.dispatch("postMessage", this.newMessage).then(function () {
+        _this.newMessage = "";
+      });
     },
     scrollToBottom: function scrollToBottom() {
       var el = document.querySelector("#conversation-card-body");
@@ -2151,7 +2155,10 @@ __webpack_require__.r(__webpack_exports__);
       if (typeof conversation != "undefined") {
         this.$set(conversation, "online", status);
       }
-    }
+    } // addMessage(message) {
+    //   this.$store.commit("addMessage", message);
+    // }
+
   },
   computed: {
     selectedConversation: function selectedConversation() {
@@ -2175,7 +2182,8 @@ __webpack_require__.r(__webpack_exports__);
       var message = data.message;
       message.writte_by_me = false;
 
-      _this.addMessage(message);
+      _this.$store.commit("addMessage", message); // this.addMessage(message);
+
     });
     Echo.join("messenger").here(function (users) {
       return users.forEach(function (user) {
@@ -79898,12 +79906,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       state.messages = messages;
     },
     addMessage: function addMessage(state, message) {
-      // ID de Conversación a actualizar last message y last_time
-      // Una donde el yo O ESTE RECIBIENDO UN MENSAJE o UNA DONDE YO SEA QUIEN ENVIA EL MENSAJE
       var conversation = state.conversations.find(function (conversation) {
-        return conversation.contact_id == message.from_id || conversation.contact_id == message.to_id;
+        return conversation.contact_id == message.to_id || conversation.contact_id == message.to_id;
       });
-      var author = this.authUser.id == message.from_id ? "Tú" : conversation.contact_name;
+      console.log(conversation);
+      var author = state.user.id == message.from_id ? "Tú" : conversation.contact_name;
       conversation.last_message = author + ":" + message.content;
       conversation.last_time = message.created_at;
 
@@ -79947,11 +79954,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       };
       return axios.post("/api/message", params).then(function (response) {
         console.log(response.data);
-        var message = response.data;
+        var message = response.data.message;
         message.written_by_me = true;
         context.commit("addMessage", message);
       })["catch"](function (error) {
-        alert(error);
         console.log(error);
       });
     }
